@@ -9,7 +9,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .hidden {
@@ -24,6 +24,7 @@ body {
   padding: 2rem 3rem;
   text-align: center;
   animation: fadeIn 1s ease;
+  margin-top: 2rem;
 }
 
 .login-box h1 {
