@@ -7,9 +7,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  overflow: auto;
+  justify-content: start;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .hidden {
@@ -24,7 +24,7 @@ body {
   padding: 2rem 3rem;
   text-align: center;
   animation: fadeIn 1s ease;
-  margin-top: 2rem;
+  margin-top: 4rem;
 }
 
 .login-box h1 {
@@ -67,6 +67,7 @@ button {
   color: black;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 10px 0;
 }
 
 button:hover {
@@ -82,6 +83,7 @@ canvas {
 
 .leaderboard {
   margin-top: 1.5rem;
+  text-align: center;
 }
 
 @keyframes fadeIn {
