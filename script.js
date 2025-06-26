@@ -1,5 +1,5 @@
 let snake, direction, food, score, username, interval;
-const gridSize = 30; // 30x30 = 600px canvas
+const gridSize = 30; // 30x30 grid creates a 600px canvas
 
 function initializeGame() {
   snake = [{ x: 15, y: 15 }];
@@ -12,7 +12,7 @@ function initializeGame() {
 
 function startGame() {
   username = document.getElementById("username").value.trim();
-  if (!username) return alert("Enter your name!");
+  if (!username) return alert("Please enter your name!");
   document.getElementById("player-name").textContent = username;
   document.getElementById("login-screen").classList.add("hidden");
   document.getElementById("game-container").classList.remove("hidden");
@@ -26,7 +26,7 @@ function startGame() {
 function gameLoop() {
   if (!direction) return;
 
-  const head = { ...snake[0] };
+  const head = { ...snake [0] };
   head.x += direction.x;
   head.y += direction.y;
 
@@ -82,15 +82,27 @@ function restartGame() {
 
 document.addEventListener("keydown", e => {
   switch (e.key) {
-    case "ArrowUp": if (direction?.y === 1) break; direction = { x: 0, y: -1 }; break;
-    case "ArrowDown": if (direction?.y === -1) break; direction = { x: 0, y: 1 }; break;
-    case "ArrowLeft": if (direction?.x === 1) break; direction = { x: -1, y: 0 }; break;
-    case "ArrowRight": if (direction?.x === -1) break; direction = { x: 1, y: 0 }; break;
+    case "ArrowUp":
+      if (direction?.y === 1) break;
+      direction = { x: 0, y: -1 };
+      break;
+    case "ArrowDown":
+      if (direction?.y === -1) break;
+      direction = { x: 0, y: 1 };
+      break;
+    case "ArrowLeft":
+      if (direction?.x === 1) break;
+      direction = { x: -1, y: 0 };
+      break;
+    case "ArrowRight":
+      if (direction?.x === -1) break;
+      direction = { x: 1, y: 0 };
+      break;
   }
 });
 
 function saveScore() {
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T') [0];
   const scores = JSON.parse(localStorage.getItem("leaderboard") || "{}");
 
   if (!scores["allTime"] || scores["allTime"].score < score) {
@@ -107,7 +119,7 @@ function saveScore() {
 
 function updateLeaderboard() {
   const scores = JSON.parse(localStorage.getItem("leaderboard") || "{}");
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T') [0];
 
   document.getElementById("allTimeHigh").textContent =
     scores["allTime"] ? `${scores["allTime"].username} - ${scores["allTime"].score}` : "None";
