@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Snake Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="login-screen" class="login-box">
+    <h1>🐍 Snake Game</h1>
+    <p class="subtitle">Play. Compete. Top the Board.</p>
+    <input type="text" id="username" placeholder="Enter your name..." />
+    <button onclick="startGame()">🎮 Start Game</button>
+  </div>
+
+  <div id="game-container" class="hidden">
+    <h2>Hello, <span id="player-name"></span></h2>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <p>Score: <span id="score">0</span></p>
+    <button onclick="restartGame()">🔄 Restart</button>
+    <div class="leaderboard">
+      <h3>🏆 All-Time High: <span id="allTimeHigh"></span></h3>
+      <h3>🌟 Today's High: <span id="todayHigh"></span></h3>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
