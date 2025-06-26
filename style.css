@@ -1,46 +1,75 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #2c3e50, #3498db);
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #1f1c2c, #928DAB);
   color: white;
-  text-align: center;
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
-.hidden {
-  display: none;
+
+.login-box {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 2rem 3rem;
+  text-align: center;
+  animation: slideUp 1s ease;
 }
-#login-screen, #game-container {
-  padding: 2rem;
-  animation: fadeIn 1s ease-in;
+
+.login-box h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
 }
-canvas {
-  background-color: #111;
-  border: 3px solid #fff;
-  margin-top: 1rem;
+
+.subtitle {
+  color: #dddddd;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
 }
+
 input {
-  padding: 10px;
+  padding: 12px;
+  width: 100%;
+  max-width: 300px;
   font-size: 1rem;
-  border-radius: 10px;
-}
-button {
-  padding: 10px 20px;
-  margin-top: 10px;
-  font-size: 1rem;
-  cursor: pointer;
   border: none;
-  background-color: #27ae60;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  background-color: rgba(255, 255, 255, 0.15);
   color: white;
+  text-align: center;
+  outline: none;
+}
+
+input::placeholder {
+  color: #ccc;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
   border-radius: 8px;
-  transition: 0.3s ease;
+  background: linear-gradient(135deg, #00c9ff, #92fe9d);
+  color: black;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
 button:hover {
-  background-color: #2ecc71;
+  transform: scale(1.05);
+  box-shadow: 0px 0px 15px rgba(146, 254, 157, 0.6);
 }
-.leaderboard {
-  margin-top: 1rem;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
