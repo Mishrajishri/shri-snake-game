@@ -1,92 +1,117 @@
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #141e30, #243b55);
-  color: white;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: start;
-  min-height: 100vh;
-  overflow-x: hidden;
+let snake, direction, food, score, username, interval;
+const gridSize = 30; // 30x30 = 600px canvas
+
+function initializeGame() {
+  snake = [{ x: 15, y: 15 }];
+  direction = null;
+  food = { x: 10, y: 10 };
+  score = 0;
+  document.getElementById("score").textContent = "0";
+  drawFood();
 }
 
-.hidden {
-  display: none;
+function startGame() {
+  username = document.getElementById("username").value.trim();
+  if (!username) return alert("Enter your name!");
+  document.getElementById("player-name").textContent = username;
+  document.getElementById("login-screen").classList.add("hidden");
+  document.getElementById("game-container").classList.remove("hidden");
+
+  initializeGame();
+  clearInterval(interval);
+  interval = setInterval(gameLoop, 150);
+  updateLeaderboard();
 }
 
-.login-box {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(6px);
-  padding: 2rem 3rem;
-  text-align: center;
-  animation: fadeIn 1s ease;
-  margin-top: 4rem;
+function gameLoop() {
+  if (!direction) return;
+
+  const head = { ...snake[0] };
+  head.x += direction.x;
+  head.y += direction.y;
+
+  if (
+    head.x < 0 || head.x >= gridSize ||
+    head.y < 0 || head.y >= gridSize ||
+    snake.some(seg => seg.x === head.x && seg.y === head.y)
+  ) {
+    clearInterval(interval);
+    saveScore();
+    alert("Game Over!");
+    return;
+  }
+
+  snake.unshift(head);
+
+  if (head.x === food.x && head.y === food.y) {
+    score++;
+    document.getElementById("score").textContent = score;
+    drawFood();
+  } else {
+    snake.pop();
+  }
+
+  drawGame();
 }
 
-.login-box h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
+function drawGame() {
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "lime";
+  snake.forEach(part => {
+    ctx.fillRect(part.x * 20, part.y * 20, 20, 20);
+  });
+
+  ctx.fillStyle = "red";
+  ctx.fillRect(food.x * 20, food.y * 20, 20, 20);
 }
 
-.subtitle {
-  color: #dddddd;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
+function drawFood() {
+  food.x = Math.floor(Math.random() * gridSize);
+  food.y = Math.floor(Math.random() * gridSize);
 }
 
-input {
-  padding: 12px;
-  width: 100%;
-  max-width: 300px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  background-color: rgba(255, 255, 255, 0.15);
-  color: white;
-  text-align: center;
-  outline: none;
+function restartGame() {
+  initializeGame();
+  clearInterval(interval);
+  interval = setInterval(gameLoop, 150);
 }
 
-input::placeholder {
-  color: #ccc;
+document.addEventListener("keydown", e => {
+  switch (e.key) {
+    case "ArrowUp": if (direction?.y === 1) break; direction = { x: 0, y: -1 }; break;
+    case "ArrowDown": if (direction?.y === -1) break; direction = { x: 0, y: 1 }; break;
+    case "ArrowLeft": if (direction?.x === 1) break; direction = { x: -1, y: 0 }; break;
+    case "ArrowRight": if (direction?.x === -1) break; direction = { x: 1, y: 0 }; break;
+  }
+});
+
+function saveScore() {
+  const today = new Date().toISOString().split('T')[0];
+  const scores = JSON.parse(localStorage.getItem("leaderboard") || "{}");
+
+  if (!scores["allTime"] || scores["allTime"].score < score) {
+    scores["allTime"] = { username, score };
+  }
+
+  if (!scores[today] || scores[today].score < score) {
+    scores[today] = { username, score };
+  }
+
+  localStorage.setItem("leaderboard", JSON.stringify(scores));
+  updateLeaderboard();
 }
 
-button {
-  padding: 12px 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #00c9ff, #92fe9d);
-  color: black;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  margin: 10px 0;
-}
+function updateLeaderboard() {
+  const scores = JSON.parse(localStorage.getItem("leaderboard") || "{}");
+  const today = new Date().toISOString().split('T')[0];
 
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(146, 254, 157, 0.6);
-}
+  document.getElementById("allTimeHigh").textContent =
+    scores["allTime"] ? `${scores["allTime"].username} - ${scores["allTime"].score}` : "None";
 
-canvas {
-  background-color: #111;
-  border: 3px solid #fff;
-  margin-top: 1rem;
-}
-
-.leaderboard {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(50px); }
-  to { opacity: 1; transform: translateY(0); }
+  document.getElementById("todayHigh").textContent =
+    scores[today] ? `${scores[today].username} - ${scores[today].score}` : "None";
 }
