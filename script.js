@@ -1,9 +1,10 @@
-let snake = [{ x: 10, y: 10 }];
-let direction = { x: 0, y: 0 };
-let food = { x: 5, y: 5 };
+let snake = [{ x: 15, y: 15 }];
+let direction = null;
+let food = { x: 10, y: 10 };
 let score = 0;
 let username = "";
 let interval;
+const gridSize = 30; // 30x30 grid for 600px canvas
 
 function startGame() {
   username = document.getElementById("username").value.trim();
@@ -11,17 +12,24 @@ function startGame() {
   document.getElementById("player-name").textContent = username;
   document.getElementById("login-screen").classList.add("hidden");
   document.getElementById("game-container").classList.remove("hidden");
+  document.getElementById("score").textContent = "0";
   drawFood();
   interval = setInterval(gameLoop, 150);
   updateLeaderboard();
 }
 
 function gameLoop() {
+  if (!direction) return;
+
   const head = { ...snake[0] };
   head.x += direction.x;
   head.y += direction.y;
 
-  if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20 || snake.some(seg => seg.x === head.x && seg.y === head.y)) {
+  if (
+    head.x < 0 || head.x >= gridSize ||
+    head.y < 0 || head.y >= gridSize ||
+    snake.some(seg => seg.x === head.x && seg.y === head.y)
+  ) {
     clearInterval(interval);
     saveScore();
     alert("Game Over!");
@@ -57,15 +65,15 @@ function drawGame() {
 }
 
 function drawFood() {
-  food.x = Math.floor(Math.random() * 20);
-  food.y = Math.floor(Math.random() * 20);
+  food.x = Math.floor(Math.random() * gridSize);
+  food.y = Math.floor(Math.random() * gridSize);
 }
 
 function restartGame() {
   score = 0;
-  snake = [{ x: 10, y: 10 }];
-  direction = { x: 0, y: 0 };
-  document.getElementById("score").textContent = score;
+  snake = [{ x: 15, y: 15 }];
+  direction = null;
+  document.getElementById("score").textContent = "0";
   clearInterval(interval);
   interval = setInterval(gameLoop, 150);
 }
